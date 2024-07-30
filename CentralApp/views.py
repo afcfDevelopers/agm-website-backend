@@ -74,20 +74,18 @@ def get_campus_avs_report(request):
         campus = query['campus']
         program = query['program-type']
         # query specific campus AVS in 'CampusAVS' Database
-        queryset = ReportImage.objects.filter(campusOrSchoolAcronym=campus, program_type = program)
+        queryset = CampusAVSReport.objects.filter(campusOrSchoolAcronym=campus, program_type = program)
         serializer = getCampusAVSReportSerializers(queryset, many=True)
 
         return Response({
             'queryset': serializer.data
         }, status=status.HTTP_200_OK)
     except Exception as e:
-        # query all the CAMPUS avs in 'CampusAVS' Database
-        queryset = CampusAVSReport.objects.all().order_by('id')
-        serializer = getCampusAVSReportSerializers(queryset, many=True)
 
-        return Response({
-            'queryset': serializer.data
-        }, status=status.HTTP_200_OK)
+        return Response({'code': 400,
+                'status': 'Bad Request',
+                'message': "1). Internal error occured, check your Internet connection OR the API back-end code. 2). Make sure that 'campusOrSchoolAcronym' and 'program_type' parameter is passed. The system passed this error specifically ->{}".format(e)
+                }, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def add_campus_avs_report(request):
@@ -195,9 +193,10 @@ def get_campus_avs_report_images(request):
         queryset = ReportImage.objects.all().order_by('id')
         serializer = getCampusAVSReportImageSerializers(queryset, many=True)
 
-        return Response({
-            'queryset': serializer.data
-        }, status=status.HTTP_200_OK)
+        return Response({'code': 400,
+                'status': 'Bad Request',
+                'message': "1). Internal error occured, check your Internet connection OR the API back-end code. 2). Make sure that 'campusOrSchoolAcronym' and 'program_type' parameter is passed. The system passed this error specifically ->{}".format(e)
+                }, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -245,8 +244,4 @@ def get_campus_avs_history_images(request):
         return Response({
             'queryset': serializer.data
         }, status=status.HTTP_200_OK)
-
-
-
-
 
