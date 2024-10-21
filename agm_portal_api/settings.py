@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     #
     # custom defined apps
     'CentralApp',
+    'Landing_Page_App',
 
 
     # third-party apps
